@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>web6</title>
+  </head>
+
+  <body>
+    <h1>[ web6 ]</h1>
+
+    <p><a th:href="@{/ajax1}">ajax 테스트페이지 1 - 기본데이터타입 및 문자열로</a></p>
+    <p><a th:href="@{/ajax2}">ajax 테스트페이지 2 - 객체로 보내기 받기</a></p>
+    <p><a th:href="@{/like}">추천기능 테스트페이지</a></p>
+    <p><a th:href="@{/idDuplicate}">아이디 중복확인 기능 테스트 페이지</a></p>
+    <p><a th:href="@{/commentView}">댓글</a></p>
+
+  </body>
+
+  <script>
+    /*
+      AJAX란? Asynchronous JavaScript And XML
+      비동기식 자바스크립트와 XML이라는 뜻 -> 현재는 JSON을 더 많이 씀
+
+      페이지 전체를 새로고침하지 않고, 필요한 데이터만 서버에서 받아와서 DOM을 조작(페이지 일부를 동적으로 변경)하는 방식자체를 의미함
+
+      - 동기    : 작업을 요청하고 응답을 받을때까지 다음 작업을 대기하는 직렬적 방식
+      - 비동기  : 요청 후 응답과 상관없이 다음 작업을 계속 진행하고 나중에 결과를 처리하는 병렬적 방식
+    */
+
+    // console.log("요청시작");
+
+    // setTimeout(
+    //   ()=>{
+    //     console.log("setTimeout콜백 실행");
+    //   }, 0  // 타이머가 0이라도 즉시실행이 아님 Call Stack(지금 실행중인코드)이 비었을때
+    // );
+
+    // console.log("요청끝");
+
+    /*
+      - 자바스크립트는 기본적으로 동기실행
+      - 비동기 API(setTimeout, fetch 등)을 만나면 그 작업만 비동기로 위임 (나중에 실행하라고 예약해두기)
+    */
+
+    //////////////////////////////////////////
+
+    // Promise객체란?
+    // 작업에 대한 결과로 받게 될 정보 그리고 그 결과값을 다루는 객체
+
+    /*
+      기본 구조
+      Promise 객체 생성하는 방법 : new Promise(실행함수)
+
+      const promise = new Promise((resolve, reject)=>{
+        // 이 함수는 Promise객체가 생성되는 순간 즉시실행
+      });
+
+      Promise를 만들때 함수 하나를 넘기는데, 실행함수라고 부른다.
+      이 함수 안에서 성공하면 resolve(),  실패하면 reject()를 호출해서 Promise의 상태를 결정한다.
+    */
+
+    //////////////Promise 성공 예제/////////////////
+    // console.log('요청시작');
+    // const promise = new Promise((resolve, reject) => {
+    //   console.log('promise내부 실행');
+
+    //   setTimeout(()=>{
+    //     resolve('데이터 도착!');
+    //     // resolve가 실행되면 promise의 상태가 fulfilled(성공)로 확정됨
+    //     // resolve에 전달한 값은 Promise에 저장됨
+    //     // then은 저장된 값을 전달받음 = then콜백의 인자로 전달된다
+    //   }, 10000);
+    // });
+
+    // promise.then(result=>{
+    //   console.log('then실행:',result);
+    // });
+    // console.log('요청끝');
+
+    //////////////Promise 실패 예제/////////////////
+
+    console.log('promise2 요청시작');
+    const promise2 = new Promise((resolve, reject) => {
+      console.log('promise2 내부 실행');
+
+      setTimeout(() => {
+        reject('에러 발생!'); // 비동기 작업 결과를 "실패"로 판단한 시점
+        // reject가 호출되면 promise의 상태가 rejected(실패)로 확정됨
+        // 전달한 값은 promise에 에러 정보로 저장됨
+      }, 10000);
+    });
+
+    promise2.then(result => {
+      // Promise가 fulfilled(성공) 상태일때만 실행됨
+      console.log('promise2 then실행:', result);
+    })
+      .catch(error => {
+        // Promise가 rejected(실패) 상태일때 실행됨
+        // reject에 전달된 값이 여기로 전달됨
+        console.log('실패:', error);
+      });
+    console.log('promise2요청끝');
+
+    ///////////////////////////////////////
+
+    /*
+      브라우저에서 HTTP요청은 자바스크립트 실행을 멈추지 않도록 비동기 방식으로 처리된다.
+      요청은 지금 보내고, 응답은 나중에 받음
+    */
+
+  </script>
+
+</html>

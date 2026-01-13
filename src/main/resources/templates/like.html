@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>[ 추천기능 테스트 ]</title>
+  </head>
+
+  <body>
+    <h1>[ 추천기능 테스트 ]</h1>
+    <span id="likeCount">0</span>
+    <img th:src="@{/images/icon-like.png}" src="../static/images/icon-like.png" id="iconLike" alt="like">
+  </body>
+  <script>
+    const iconLike = document.getElementById('iconLike');
+    const likeCount = document.getElementById('likeCount');
+    iconLike.addEventListener('click', likeUp);
+
+    function likeUp() {
+      // 서버로 가서 특정 글(글의 id boardNum) 레코드가 가진 좋아요 컬럼의 값을 +1하도록 요청
+      fetch('like',{
+        method: 'POST'
+        , headers:{
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+        , body: new URLSearchParams({
+          boardNum: 1 //추천할 글번호
+        })
+      })
+        .then(response => response.text())
+        .then(cnt => {
+          likeCount.textContent = cnt;
+        })
+        .catch(error=>{
+          console.error('에러발생', error);
+        })
+      ;
+    }
+  </script>
+
+</html>
